@@ -14,7 +14,25 @@ services:
     networks:
       - roachnet
     environment:
-      DATABASE_URL: "postgresql://root@roach1:26257/test?sslmode=disable"
+      DATABASE_URL: "postgresql://root@postgres:5432/test"
+
+  postgres:
+    image: postgres:11.1
+    container_name: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - roachnet
+    volumes:
+      - "./tmp/pgdata:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: ""
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8
+      POSTGRES_DB: test
+    restart: always
+    command: ["-c", "max_connections=200"]
+
   cockroachdb_1:
     image: cockroachdb/cockroach:v19.2.4
     container_name: roach1
@@ -25,10 +43,25 @@ services:
       - roachnet
     restart: always
     command:
-      - start-single-node
+      - start
       - "--insecure"
+      - "--join=roach1,roach2"
     volumes:
       - "./tmp/cockroach-data/roach1:/cockroach/cockroach-data"
+
+  cockroachdb_2:
+    image: cockroachdb/cockroach:v19.2.4
+    container_name: roach2
+    networks:
+      - roachnet
+    restart: always
+    command:
+      - start
+      - "--insecure"
+      - "--join=roach1,roach2"
+    volumes:
+      - "./tmp/cockroach-data/roach2:/cockroach/cockroach-data"
+  
 networks:
   roachnet:
     driver: bridge
