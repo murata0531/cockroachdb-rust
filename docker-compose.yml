@@ -1,0 +1,34 @@
+version: "3"
+services:
+  rust:
+    container_name: rust
+    build:
+      context: .
+    volumes:
+      - .:/app
+    environment:
+      USER: root
+    depends_on:
+      - cockroachdb_1
+    command: cargo watch -x "run" -w src
+    networks:
+      - roachnet
+    environment:
+      DATABASE_URL: "postgresql://root@roach1:26257/test?sslmode=disable"
+  cockroachdb_1:
+    image: cockroachdb/cockroach:v19.2.4
+    container_name: roach1
+    ports:
+      - 26257:26257
+      - 8080:8080
+    networks:
+      - roachnet
+    restart: always
+    command:
+      - start-single-node
+      - "--insecure"
+    volumes:
+      - "./tmp/cockroach-data/roach1:/cockroach/cockroach-data"
+networks:
+  roachnet:
+    driver: bridge
