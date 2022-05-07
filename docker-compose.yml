@@ -13,7 +13,7 @@ services:
     command: cargo watch -x "run" -w src
     networks:
       - roachnet
-    environment:
+    Environment:
       DATABASE_URL: "postgresql://root@postgres:5432/test"
 
   postgres:
