@@ -1,4 +1,4 @@
-FROM rust:1.54.0-slim-buster
+FROM rust:1.60.0-slim-buster
 
 # ローカルのtargetディレクトリにビルドするとマウントしている時に遅くなるのでビルドディレクトリを変える
 ENV CARGO_TARGET_DIR=/tmp/target \
@@ -19,7 +19,6 @@ RUN apt-get update \
      build-essential \
      git \
      wget \
-     gcc-multilib \
   && echo "ja_JP UTF-8" > /etc/locale.gen \
   && locale-gen \
   && echo "install rust tools" \
