@@ -4,11 +4,15 @@ CockroachDBとPostgreSQLでベンチマーク
 
 # 環境
 
-CockroachDB
+CockroachDB : 19.2.4
 
-PostgreSQL
+PostgreSQL : 11.1
 
-Rust - Diesel
+Rust : 1.60
+
+Diesel : 1.4.1
+
+Docker
 
 ## 構築
 
@@ -25,9 +29,21 @@ bas# diesel migration run
 
 bash# cargo run
 
-bash# build --release
+bash# cargo build --release
 ```
 
+## PostgreSQLにログイン
+```
+$ ocker-compose exec postgres bash
+
+bash# psql -h localhost -p 5432 -U root -d test
+```
+
+コンテナとイメージ破棄
+
+```
+$ docker-compose down --rmi all --volumes --remove-orphans
+```
 ## ベンチマーク
 
 Postgres
@@ -41,3 +57,5 @@ Cockroach
 ```
 bash# time /tmp/target/release/app
 ```
+
+`http://localhost:8080`にアクセスするとCockroachDBの状態を確認できる
