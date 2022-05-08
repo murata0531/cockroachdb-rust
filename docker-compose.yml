@@ -8,13 +8,12 @@ services:
       - .:/app
     environment:
       USER: root
+      DATABASE_URL: "postgresql://root@postgres:5432/test"
     depends_on:
       - cockroachdb_1
     command: cargo watch -x "run" -w src
     networks:
-      - roachnet
-    Environment:
-      DATABASE_URL: "postgresql://root@postgres:5432/test"
+      - roachnet      
 
   postgres:
     image: postgres:11.1
