@@ -30,7 +30,7 @@ services:
       POSTGRES_INITDB_ARGS: --encoding=UTF-8
       POSTGRES_DB: test
     restart: always
-    command: ["-c", "max_connections=200"]
+    command: ["-c", "max_connections=300"]
 
   cockroachdb_1:
     image: cockroachdb/cockroach:v19.2.4
