@@ -34,7 +34,7 @@ bash# cargo build --release
 
 ## PostgreSQLにログイン
 ```
-$ ocker-compose exec postgres bash
+$ docker-compose exec postgres bash
 
 bash# psql -h localhost -p 5432 -U root -d test
 ```
@@ -53,6 +53,11 @@ bash# time DATABASE_URL=postgresql://root@postgres:5432/test /tmp/target/release
 ```
 
 Cockroach
+
+```
+bash# time DATABASE_URL=postgresql://root@roach1:26257/test?sslmode=disable /tmp/target/release/app
+```
+もしくは
 
 ```
 bash# time /tmp/target/release/app
